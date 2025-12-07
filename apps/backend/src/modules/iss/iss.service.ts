@@ -51,4 +51,10 @@ export class IssService {
 
     return iss_log[0];
   }
+
+  async triggerIss() {
+    await this.fetchApi();
+
+    return this.getLast();
+  }
 }

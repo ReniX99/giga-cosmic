@@ -9,4 +9,9 @@ export class IssController {
   async getLastIss() {
     return this.issService.getLast();
   }
+
+  @Get('fetch')
+  async triggerIss() {
+    return this.issService.triggerIss();
+  }
 }
