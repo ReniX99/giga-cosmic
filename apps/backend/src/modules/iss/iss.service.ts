@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { firstValueFrom } from 'rxjs';
 import { PrismaService } from '../prisma/prisma.service';
+import { JsonValue } from '../prisma/generated/internal/prismaNamespace';
 
 @Injectable()
 export class IssService {
@@ -38,5 +39,16 @@ export class IssService {
         payload: data,
       },
     });
+  }
+
+  async getLast() {
+    const iss_log = await this.prismaService.iss_log.findMany({
+      orderBy: {
+        fetchedAt: 'desc',
+      },
+      take: 1,
+    });
+
+    return iss_log[0];
   }
 }
