@@ -3,6 +3,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { firstValueFrom } from 'rxjs';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class IssService {
@@ -14,6 +15,7 @@ export class IssService {
     private readonly configService: ConfigService,
     private readonly schedulerRegistry: SchedulerRegistry,
     private readonly httpService: HttpService,
+    private readonly prismaService: PrismaService,
   ) {
     this.ISS_URL = configService.getOrThrow<string>('ISS_URL');
     this.ISS_INTERVAL = configService.getOrThrow<number>('ISS_FETCH_INTERVAL');
@@ -26,8 +28,15 @@ export class IssService {
 
   private async fetchApi() {
     const obsResponse = this.httpService.get(this.ISS_URL);
-
     const { data } = await firstValueFrom(obsResponse);
+
     this.logger.log(data);
+
+    await this.prismaService.iss_log.create({
+      data: {
+        sourceUrl: this.ISS_URL,
+        payload: data,
+      },
+    });
   }
 }
