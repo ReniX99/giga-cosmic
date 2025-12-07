@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { ConfigModule } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
 import { IssModule } from './modules/iss/iss.module';
+import { PrismaModule } from './modules/prisma/prisma.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { IssModule } from './modules/iss/iss.module';
     }),
     ScheduleModule.forRoot(),
     IssModule,
+    PrismaModule,
   ],
   controllers: [AppController],
 })
