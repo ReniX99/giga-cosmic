@@ -1,5 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { IssService } from './iss.service';
+import { TrendIssDto } from './dto';
 
 @Controller('')
 export class IssController {
@@ -13,5 +14,10 @@ export class IssController {
   @Get('fetch')
   async triggerIss() {
     return this.issService.triggerIss();
+  }
+
+  @Get('iss/trend')
+  async getIssTrend(): Promise<TrendIssDto> {
+    return this.issService.getIssTrend();
   }
 }
