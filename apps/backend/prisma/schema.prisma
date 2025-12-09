@@ -18,3 +18,15 @@ model iss_log {
 
   @@map("iss_logs")
 }
+
+model space_cache {
+  id Int @id @default(autoincrement())
+
+  fetchedAt DateTime @default(now()) @map("fetched_at")
+
+  source String
+
+  payload Json
+
+  @@map("space_cache")
+}
