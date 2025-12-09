@@ -6,6 +6,7 @@ import { IssModule } from './modules/iss/iss.module';
 import { PrismaModule } from './modules/prisma/prisma.module';
 import { ApodModule } from './modules/apod/apod.module';
 import { SpaceCacheModule } from './modules/space-cache/space-cache.module';
+import { NeoModule } from './modules/neo/neo.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { SpaceCacheModule } from './modules/space-cache/space-cache.module';
     PrismaModule,
     ApodModule,
     SpaceCacheModule,
+    NeoModule,
   ],
   controllers: [AppController],
 })
