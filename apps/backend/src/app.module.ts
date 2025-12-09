@@ -7,6 +7,7 @@ import { PrismaModule } from './modules/prisma/prisma.module';
 import { ApodModule } from './modules/apod/apod.module';
 import { SpaceCacheModule } from './modules/space-cache/space-cache.module';
 import { NeoModule } from './modules/neo/neo.module';
+import { DonkiModule } from './modules/donki/donki.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { NeoModule } from './modules/neo/neo.module';
     ApodModule,
     SpaceCacheModule,
     NeoModule,
+    DonkiModule,
   ],
   controllers: [AppController],
 })
