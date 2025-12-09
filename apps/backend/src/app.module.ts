@@ -4,6 +4,8 @@ import { ConfigModule } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
 import { IssModule } from './modules/iss/iss.module';
 import { PrismaModule } from './modules/prisma/prisma.module';
+import { ApodModule } from './modules/apod/apod.module';
+import { SpaceCacheModule } from './modules/space-cache/space-cache.module';
 
 @Module({
   imports: [
@@ -13,6 +15,8 @@ import { PrismaModule } from './modules/prisma/prisma.module';
     ScheduleModule.forRoot(),
     IssModule,
     PrismaModule,
+    ApodModule,
+    SpaceCacheModule,
   ],
   controllers: [AppController],
 })
