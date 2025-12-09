@@ -8,6 +8,7 @@ import { ApodModule } from './modules/apod/apod.module';
 import { SpaceCacheModule } from './modules/space-cache/space-cache.module';
 import { NeoModule } from './modules/neo/neo.module';
 import { DonkiModule } from './modules/donki/donki.module';
+import { SpacexModule } from './modules/spacex/spacex.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { DonkiModule } from './modules/donki/donki.module';
     SpaceCacheModule,
     NeoModule,
     DonkiModule,
+    SpacexModule,
   ],
   controllers: [AppController],
 })
