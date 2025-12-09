@@ -1,5 +1,5 @@
 import { HttpService } from '@nestjs/axios';
-import { Injectable, Logger } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { SpaceCacheService } from '../space-cache/space-cache.service';
@@ -15,10 +15,11 @@ export class DonkiService {
   logger = new Logger(DonkiService.name);
 
   constructor(
+    @Inject(forwardRef(() => SpaceCacheService))
+    private readonly spaceCacheService: SpaceCacheService,
     private readonly configService: ConfigService,
     private readonly schedularRegistry: SchedulerRegistry,
     private readonly httpService: HttpService,
-    private readonly spaceCacheService: SpaceCacheService,
   ) {
     this.DONKI_CME_URL = configService.getOrThrow<string>('DONKI_CME_URL');
     this.DONKI_FLR_URL = configService.getOrThrow<string>('DONKI_FLR_URL');

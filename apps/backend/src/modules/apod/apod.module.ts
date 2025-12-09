@@ -1,10 +1,11 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { ApodService } from './apod.service';
 import { SpaceCacheModule } from '../space-cache/space-cache.module';
 import { HttpModule } from '@nestjs/axios';
 
 @Module({
-  imports: [HttpModule, SpaceCacheModule],
+  imports: [forwardRef(() => SpaceCacheModule), HttpModule],
   providers: [ApodService],
+  exports: [ApodService],
 })
 export class ApodModule {}

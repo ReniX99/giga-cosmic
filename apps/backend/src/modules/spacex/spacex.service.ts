@@ -1,5 +1,5 @@
 import { HttpService } from '@nestjs/axios';
-import { Injectable, Logger } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { SpaceCacheService } from '../space-cache/space-cache.service';
@@ -13,10 +13,11 @@ export class SpacexService {
   logger = new Logger(SpacexService.name);
 
   constructor(
+    @Inject(forwardRef(() => SpaceCacheService))
+    private readonly spaceCacheService: SpaceCacheService,
     private readonly configService: ConfigService,
     private readonly schedulerRegistry: SchedulerRegistry,
     private readonly httpService: HttpService,
-    private readonly spaceCacheService: SpaceCacheService,
   ) {
     this.SPACEX_URL = configService.getOrThrow<string>('SPACEX_URL');
     this.SPACEX_INTERVAL = configService.getOrThrow<number>(

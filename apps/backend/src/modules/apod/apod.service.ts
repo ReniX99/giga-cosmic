@@ -1,5 +1,5 @@
 import { HttpService } from '@nestjs/axios';
-import { Injectable, Logger } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { PrismaService } from '../prisma/prisma.service';
@@ -15,11 +15,12 @@ export class ApodService {
   logger = new Logger(ApodService.name);
 
   constructor(
+    @Inject(forwardRef(() => SpaceCacheService))
+    private readonly spaceCacheService: SpaceCacheService,
     private readonly configService: ConfigService,
     private readonly schedulerRegistry: SchedulerRegistry,
     private readonly httpService: HttpService,
     private readonly prismaService: PrismaService,
-    private readonly spaceCacheService: SpaceCacheService,
   ) {
     this.APOD_URL = configService.getOrThrow<string>('APOD_URL');
     this.APOD_INTERVAL = configService.getOrThrow<number>(
