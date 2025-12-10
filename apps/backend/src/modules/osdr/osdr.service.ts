@@ -5,7 +5,7 @@ import { ConfigService } from '@nestjs/config';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { firstValueFrom } from 'rxjs';
 import { CreateOsdrType } from './types';
-import { OsdrDto } from './dto';
+import { OsdrDto, SyncOsdrDataCountDto } from './dto';
 
 @Injectable()
 export class OsdrService {
@@ -36,33 +36,46 @@ export class OsdrService {
     this.schedulerRegistry.addInterval('osdr-interval', osdrInterval);
   }
 
-  async fetchApi(): Promise<void> {
+  async fetchApi(): Promise<number> {
     const obsResponse = this.httpService.get(this.OSDR_URL);
 
     const { data } = await firstValueFrom(obsResponse);
 
     this.logger.log('Fetch Osdr Data');
 
-    const osdrItems: CreateOsdrType[] = [];
-    for (const [key, value] of Object.entries(data)) {
-      osdrItems.push({
+    const osdrItems = Object.entries(data);
+    for (const [key, value] of osdrItems) {
+      const osdrItem: CreateOsdrType = {
         datasetId: key,
         title: key,
         status: 'OK',
         updatedAt: new Date().toISOString(),
         raw: value,
+      };
+
+      await this.prismaService.osdr_item.upsert({
+        where: {
+          datasetId: osdrItem.datasetId,
+        },
+        create: osdrItem,
+        update: {
+          updatedAt: new Date().toISOString(),
+        },
       });
     }
 
-    await this.prismaService.osdr_item.createMany({
-      data: osdrItems,
-    });
+    const objectCount = osdrItems.length;
+    return objectCount;
   }
 
-  async syncOsdr(): Promise<void> {
-    await this.fetchApi();
+  async syncOsdr(): Promise<SyncOsdrDataCountDto> {
+    const objectCount = await this.fetchApi();
 
-    this.logger.log('Sync Osdr Data');
+    this.logger.log(`Sync ${objectCount} Osdr Data`);
+
+    return {
+      written: objectCount,
+    };
   }
 
   async getOsdrList(): Promise<OsdrDto[]> {

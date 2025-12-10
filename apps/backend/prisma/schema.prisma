@@ -34,7 +34,7 @@ model space_cache {
 model osdr_item {
   id Int @id @default(autoincrement())
 
-  datasetId String @map("dataset_id")
+  datasetId String @map("dataset_id") @unique
 
   title String
 

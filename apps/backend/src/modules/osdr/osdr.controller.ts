@@ -1,13 +1,13 @@
 import { Controller, Get } from '@nestjs/common';
 import { OsdrService } from './osdr.service';
-import { OsdrDto } from './dto';
+import { OsdrDto, SyncOsdrDataCountDto } from './dto';
 
 @Controller('osdr')
 export class OsdrController {
   constructor(private readonly osdrService: OsdrService) {}
 
   @Get('sync')
-  async syncOsdr(): Promise<void> {
+  async syncOsdr(): Promise<SyncOsdrDataCountDto> {
     return this.osdrService.syncOsdr();
   }
 
