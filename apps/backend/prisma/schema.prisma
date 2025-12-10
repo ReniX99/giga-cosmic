@@ -30,3 +30,21 @@ model space_cache {
 
   @@map("space_cache")
 }
+
+model osdr_item {
+  id Int @id @default(autoincrement())
+
+  datasetId String @map("dataset_id")
+
+  title String
+
+  status String
+
+  updatedAt DateTime @map("updated_at")
+
+  insertedAt DateTime @default(now()) @map("inserted_at")
+
+  raw Json
+
+  @@map("osdr_items")
+}
