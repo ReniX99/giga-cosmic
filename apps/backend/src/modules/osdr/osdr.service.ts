@@ -5,11 +5,13 @@ import { ConfigService } from '@nestjs/config';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { firstValueFrom } from 'rxjs';
 import { CreateOsdrType } from './types';
+import { OsdrDto } from './dto';
 
 @Injectable()
 export class OsdrService {
   private OSDR_URL: string;
   private OSDR_INTERVAL: number;
+  private OSDR_LIST_LIMIT: number;
 
   private logger = new Logger(OsdrService.name);
 
@@ -22,6 +24,9 @@ export class OsdrService {
     this.OSDR_URL = this.configService.getOrThrow<string>('OSDR_URL');
     this.OSDR_INTERVAL = this.configService.getOrThrow<number>(
       'OSDR_FETCH_INTERVAL',
+    );
+    this.OSDR_LIST_LIMIT = Number(
+      this.configService.getOrThrow<string>('OSDR_LIST_LIMIT'),
     );
 
     const osdrInterval = setInterval(() => {
@@ -51,6 +56,21 @@ export class OsdrService {
 
     await this.prismaService.osdr_item.createMany({
       data: osdrItems,
+    });
+  }
+
+  async syncOsdr(): Promise<void> {
+    await this.fetchApi();
+
+    this.logger.log('Sync Osdr Data');
+  }
+
+  async getOsdrList(): Promise<OsdrDto[]> {
+    return await this.prismaService.osdr_item.findMany({
+      orderBy: {
+        id: 'desc',
+      },
+      take: this.OSDR_LIST_LIMIT,
     });
   }
 }
