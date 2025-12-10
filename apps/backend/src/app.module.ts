@@ -9,6 +9,7 @@ import { SpaceCacheModule } from './modules/space-cache/space-cache.module';
 import { NeoModule } from './modules/neo/neo.module';
 import { DonkiModule } from './modules/donki/donki.module';
 import { SpacexModule } from './modules/spacex/spacex.module';
+import { OsdrModule } from './modules/osdr/osdr.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { SpacexModule } from './modules/spacex/spacex.module';
     NeoModule,
     DonkiModule,
     SpacexModule,
+    OsdrModule,
   ],
   controllers: [AppController],
 })
