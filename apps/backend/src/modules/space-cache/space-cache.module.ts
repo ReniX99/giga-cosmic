@@ -5,6 +5,7 @@ import { ApodModule } from '../apod/apod.module';
 import { NeoModule } from '../neo/neo.module';
 import { DonkiModule } from '../donki/donki.module';
 import { SpacexModule } from '../spacex/spacex.module';
+import { IssModule } from '../iss/iss.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { SpacexModule } from '../spacex/spacex.module';
     forwardRef(() => NeoModule),
     forwardRef(() => DonkiModule),
     forwardRef(() => SpacexModule),
+    IssModule,
   ],
   controllers: [SpaceCacheController],
   providers: [SpaceCacheService],

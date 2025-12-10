@@ -1,10 +1,11 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { RefreshedSpaceCacheDto } from './dto';
+import { RefreshedSpaceCacheDto, SpaceSummaryDto } from './dto';
 import { ApodService } from '../apod/apod.service';
 import { NeoService } from '../neo/neo.service';
 import { DonkiService } from '../donki/donki.service';
 import { SpacexService } from '../spacex/spacex.service';
+import { IssService } from '../iss/iss.service';
 
 @Injectable()
 export class SpaceCacheService {
@@ -18,6 +19,7 @@ export class SpaceCacheService {
     @Inject(forwardRef(() => SpacexService))
     private readonly spaceXService: SpacexService,
     private readonly prismaService: PrismaService,
+    private readonly issService: IssService,
   ) {}
 
   async writeCache(source: string, payload: any): Promise<void> {
@@ -86,6 +88,28 @@ export class SpaceCacheService {
 
     return {
       refreshed: refreshedList,
+    };
+  }
+
+  async getSpaceSummary(): Promise<SpaceSummaryDto> {
+    const apodData = await this.getLast('apod');
+    const neoData = await this.getLast('neo');
+    const donkiFlrData = await this.getLast('donki flr');
+    const donkiCmeData = await this.getLast('donki cme');
+    const spaceXData = await this.getLast('spacex');
+
+    const lastIssData = await this.issService.getLast();
+
+    const osdrCount = await this.prismaService.osdr_item.count();
+
+    return {
+      apod: apodData,
+      neo: neoData,
+      flr: donkiFlrData,
+      cme: donkiCmeData,
+      spacex: spaceXData,
+      iss: lastIssData,
+      osdrCount,
     };
   }
 }

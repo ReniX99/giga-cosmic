@@ -7,5 +7,6 @@ import { HttpModule } from '@nestjs/axios';
   imports: [HttpModule],
   controllers: [IssController],
   providers: [IssService],
+  exports: [IssService],
 })
 export class IssModule {}

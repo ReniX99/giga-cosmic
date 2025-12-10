@@ -1,5 +1,6 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { SpaceCacheService } from './space-cache.service';
+import { SpaceSummaryDto } from './dto';
 
 @Controller('space')
 export class SpaceCacheController {
@@ -11,7 +12,12 @@ export class SpaceCacheController {
   }
 
   @Get('refresh')
-  refresh(@Query('src') sourceString: string) {
-    return this.spaceCacheService.refresh(sourceString);
+  async refresh(@Query('src') sourceString: string) {
+    return await this.spaceCacheService.refresh(sourceString);
+  }
+
+  @Get('summary')
+  async getSpaceSummary(): Promise<SpaceSummaryDto> {
+    return await this.spaceCacheService.getSpaceSummary();
   }
 }
