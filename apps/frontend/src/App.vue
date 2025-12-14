@@ -12,7 +12,9 @@
             <router-link :to="{ name: 'osdr' }">
               <li class="hover:underline underline-offset-4">OSDR</li>
             </router-link>
-            <li class="cursor-pointer">Секция 4</li>
+            <router-link :to="{ name: 'iss' }">
+              <li class="hover:underline underline-offset-4">ISS</li>
+            </router-link>
           </ul>
         </nav>
       </div>
