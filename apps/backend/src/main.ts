@@ -7,6 +7,9 @@ async function bootstrap() {
     logger: new ConsoleLogger({
       prefix: 'GigaCosmic',
     }),
+    cors: {
+      origin: 'http://localhost:5173',
+    },
   });
 
   await app.listen((process.env.PORT as string | number) ?? 3000);
