@@ -1,17 +1,10 @@
 <script setup lang="ts">
-  import { onMounted, ref } from 'vue'
+  import { formatIsoUtcString } from '@/utils/date'
   import type { TIss } from '../types'
-  import { fetchLastIss } from '../api'
 
-  const iss = ref<TIss>()
-
-  onMounted(async () => {
-    try {
-      iss.value = await fetchLastIss()
-    } catch (err) {
-      console.log(err)
-    }
-  })
+  defineProps<{
+    iss: TIss
+  }>()
 </script>
 
 <template>
@@ -21,23 +14,23 @@
     </h2>
     <div class="flex gap-4 items-center">
       <p class="font-medium text-[17px]">Широта:</p>
-      <p>{{ iss?.payload!.latitude ?? '-' }}</p>
+      <p>{{ iss?.payload!.latitude.toFixed(4) ?? '-' }}</p>
     </div>
     <div class="flex gap-4 items-center">
       <p class="font-medium text-[17px]">Долгота:</p>
-      <p>{{ iss?.payload!.longitude ?? '-' }}</p>
+      <p>{{ iss?.payload!.longitude.toFixed(4) ?? '-' }}</p>
     </div>
     <div class="flex gap-4 items-center">
       <p class="font-medium text-[17px]">Высота (км):</p>
-      <p>{{ iss?.payload!.latitude ?? '-' }}</p>
+      <p>{{ Math.round(iss?.payload!.altitude) ?? '-' }}</p>
     </div>
     <div class="flex gap-4 items-center">
       <p class="font-medium text-[17px]">Скорость (км/ч):</p>
-      <p>{{ iss?.payload!.velocity ?? '-' }}</p>
+      <p>{{ Math.round(iss?.payload!.velocity) ?? '-' }}</p>
     </div>
     <div class="flex gap-4 items-center">
       <p class="font-medium text-[17px]">Время:</p>
-      <p>{{ iss?.fetchedAt ?? '-' }}</p>
+      <p>{{ iss?.fetchedAt ? formatIsoUtcString(new Date(iss.fetchedAt).toISOString()) : '-' }}</p>
     </div>
   </article>
 </template>

@@ -23,15 +23,15 @@
     </div>
     <div class="flex gap-4 items-center">
       <p class="font-medium text-[17px]">Смещение (км):</p>
-      <p>{{ trendIss?.deltaKm ?? 0 }}</p>
+      <p>{{ Math.round(trendIss?.deltaKm) ?? 0 }}</p>
     </div>
     <div class="flex gap-4 items-center">
       <p class="font-medium text-[17px]">Интервал (сек):</p>
-      <p>{{ trendIss?.deltaSec ?? 0 }}</p>
+      <p>{{ Math.round(trendIss?.deltaSec) ?? 0 }}</p>
     </div>
     <div class="flex gap-4 items-center">
       <p class="font-medium text-[17px]">Скорость (км/ч):</p>
-      <p>{{ trendIss?.velocityKmH ?? '-' }}</p>
+      <p>{{ Math.round(trendIss?.velocityKmH) ?? '-' }}</p>
     </div>
   </article>
 </template>
