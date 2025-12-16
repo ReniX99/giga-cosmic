@@ -8,7 +8,9 @@
         <nav>
           <ul class="flex gap-14 text-[16px] font-medium">
             <li class="cursor-pointer">Секция 1</li>
-            <li class="cursor-pointer">Секция 2</li>
+            <router-link :to="{ name: 'jwst' }">
+              <li class="hover:underline underline-offset-4">JWST</li>
+            </router-link>
             <router-link :to="{ name: 'osdr' }">
               <li class="hover:underline underline-offset-4">OSDR</li>
             </router-link>

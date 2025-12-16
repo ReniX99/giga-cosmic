@@ -1,5 +1,6 @@
 import IssPage from '@/pages/IssPage.vue'
 import OsdrPage from '@/pages/OsdrPage.vue'
+import JwstPage from '@/pages/JwstPage.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const routes = [
@@ -12,6 +13,11 @@ const routes = [
     path: '/iss',
     component: IssPage,
     name: 'iss',
+  },
+  {
+    path: '/jwst',
+    component: JwstPage,
+    name: 'jwst',
   },
 ]
 
