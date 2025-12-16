@@ -1,16 +1,19 @@
 import { HttpService } from '@nestjs/axios';
-import { Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { firstValueFrom } from 'rxjs';
 import { PrismaService } from '../prisma/prisma.service';
 import { TrendIssDto } from './dto';
 import { Prisma } from '../prisma/generated/client';
+import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager';
 
 @Injectable()
 export class IssService {
   ISS_URL: string;
   ISS_INTERVAL: number;
+
+  LAST_ISS_CACHE_KEY: string = 'last-iss-key';
 
   logger = new Logger(IssService.name);
   constructor(
@@ -18,6 +21,7 @@ export class IssService {
     private readonly schedulerRegistry: SchedulerRegistry,
     private readonly httpService: HttpService,
     private readonly prismaService: PrismaService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {
     this.ISS_URL = configService.getOrThrow<string>('ISS_URL');
     this.ISS_INTERVAL = configService.getOrThrow<number>('ISS_FETCH_INTERVAL');
@@ -32,6 +36,8 @@ export class IssService {
     const obsResponse = this.httpService.get(this.ISS_URL);
     const { data } = await firstValueFrom(obsResponse);
 
+    await this.cacheManager.del(this.LAST_ISS_CACHE_KEY);
+    this.logger.log('Delete last iss from cache');
     this.logger.log(data);
 
     await this.prismaService.iss_log.create({
@@ -43,6 +49,13 @@ export class IssService {
   }
 
   async getLast() {
+    const cacheLastIss = await this.cacheManager.get(this.LAST_ISS_CACHE_KEY);
+
+    if (cacheLastIss) {
+      this.logger.log('Get last iss from cache');
+      return cacheLastIss;
+    }
+
     const iss_log = await this.prismaService.iss_log.findMany({
       orderBy: {
         fetchedAt: 'desc',
@@ -50,7 +63,12 @@ export class IssService {
       take: 1,
     });
 
-    return iss_log[0];
+    const lastIss = iss_log[0];
+    await this.cacheManager.set(this.LAST_ISS_CACHE_KEY, lastIss);
+
+    this.logger.log('Set last iss to cache');
+
+    return lastIss;
   }
 
   async triggerIss() {

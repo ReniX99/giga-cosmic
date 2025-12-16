@@ -24,6 +24,7 @@ import { APP_GUARD } from '@nestjs/core';
       useFactory: getThrottlerConfig,
       inject: [ConfigService],
     }),
+
     ScheduleModule.forRoot(),
     IssModule,
     SpaceCacheModule,
