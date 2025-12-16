@@ -13,6 +13,7 @@ import { OsdrModule } from './modules/osdr/osdr.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { getThrottlerConfig } from './config';
 import { APP_GUARD } from '@nestjs/core';
+import { AstroModule } from './modules/astro/astro.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { APP_GUARD } from '@nestjs/core';
     DonkiModule,
     SpacexModule,
     OsdrModule,
+    AstroModule,
   ],
   controllers: [AppController],
   providers: [

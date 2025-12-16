@@ -2,6 +2,7 @@ import IssPage from '@/pages/IssPage.vue'
 import OsdrPage from '@/pages/OsdrPage.vue'
 import JwstPage from '@/pages/JwstPage.vue'
 import { createRouter, createWebHistory } from 'vue-router'
+import AstroPage from '@/pages/AstroPage.vue'
 
 const routes = [
   {
@@ -18,6 +19,11 @@ const routes = [
     path: '/jwst',
     component: JwstPage,
     name: 'jwst',
+  },
+  {
+    path: '/astro',
+    component: AstroPage,
+    name: 'astro',
   },
 ]
 

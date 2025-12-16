@@ -7,7 +7,9 @@
         <h1 class="font-medium tracking-widest text-[24px] uppercase">Giga Cosmic</h1>
         <nav>
           <ul class="flex gap-14 text-[16px] font-medium">
-            <li class="cursor-pointer">Секция 1</li>
+            <router-link :to="{ name: 'astro' }">
+              <li class="hover:underline underline-offset-4">ASTRO</li>
+            </router-link>
             <router-link :to="{ name: 'jwst' }">
               <li class="hover:underline underline-offset-4">JWST</li>
             </router-link>
