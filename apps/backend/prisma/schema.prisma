@@ -48,3 +48,19 @@ model osdr_item {
 
   @@map("osdr_items")
 }
+
+model telemetry {
+  id Int @id @default(autoincrement())
+
+  timestamp DateTime
+
+  isRain Boolean @map("is_rain")
+
+  temperature Int
+
+  text String 
+
+  fileName String @map("file_name")
+
+  @@map("telemetries")
+}

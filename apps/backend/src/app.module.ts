@@ -14,6 +14,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { getThrottlerConfig } from './config';
 import { APP_GUARD } from '@nestjs/core';
 import { AstroModule } from './modules/astro/astro.module';
+import { CsvModule } from './modules/csv/csv.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { AstroModule } from './modules/astro/astro.module';
     SpacexModule,
     OsdrModule,
     AstroModule,
+    CsvModule,
   ],
   controllers: [AppController],
   providers: [
