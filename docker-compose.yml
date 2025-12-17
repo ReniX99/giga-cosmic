@@ -21,6 +21,26 @@ services:
     command: ["redis-server", "--requirepass", "$REDIS_PASSWORD"]
     volumes:
       - redis-data:/data
+  frontend:
+    build:
+      context: ./apps/frontend
+    env_file:
+      - ./apps/frontend/.env
+    container_name: client
+    ports:
+      - 5173:80
+
+  backend:
+    build:
+      context: ./apps/backend
+    env_file:
+      - ./apps/backend/.env
+    container_name: server
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+      - redis
 volumes:
   postgres-data:
   redis-data:
